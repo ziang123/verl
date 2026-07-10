@@ -1,22 +1,9 @@
-# verl documentations
+# 文档索引
 
-## Build the docs
+- `qwen25_math_1_5b_lora_test_config.md`：环境、参数、兼容性补丁和两次 50-step 测试结果
+- `cleanup_manifest.md`：本次精简的保留范围、移出范围和恢复方法
 
-```bash
-# If you want to view auto-generated API docstring, please make sure verl is available in python path. For instance, install verl via:
-# pip install .. -e[test]
+项目运行入口：
 
-# Install dependencies needed for building docs.
-pip install -r requirements-docs.txt
-
-# Build the docs.
-make clean
-make html
-```
-
-## Open the docs with your browser
-
-```bash
-python -m http.server -d _build/html/
-```
-Launch your browser and navigate to http://localhost:8000 to view the documentation. Alternatively you could drag the file `_build/html/index.html` to your local browser and view directly.
+- GRPO：`examples/grpo_trainer/run_qwen2_5-3b_gsm8k_grpo_lora.sh`
+- DAPO：`examples/dapo/run_qwen2_5_math_1_5b_gsm8k_dapo_lora_test.sh`

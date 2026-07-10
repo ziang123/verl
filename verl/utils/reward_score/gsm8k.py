@@ -56,7 +56,7 @@ def extract_solution(solution_str, method="strict"):
     if method == "strict":
         solutions = re.findall("#### (\\-?[0-9\\.\\,]+)", solution_str)
         if len(solutions) == 0:
-            final_answer = None
+            final_answer = _extract_boxed_solution(solution_str)
         else:
             # take the last solution
             final_answer = _clean_numeric_answer(solutions[-1])

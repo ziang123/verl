@@ -62,6 +62,8 @@ Qwen2.5-Math 模型实际更常输出数学模型格式：
 - strict 模式新增支持 `\boxed{number}`
 - 数字清洗支持去掉 `,` 和 `$`
 
+当前 checkout 的 `compute_score` 还包含格式、tag、计算过程、数字答案和正确性五个分项，总分上限为 2.0。只包含正确数字的 `#### 42` 或 `\boxed{42}` 可以获得数字分和正确性分。下面的 2026-07-09 结果是已有 50-step smoke test 记录；使用当前 reward 代码重新训练时，score 数值尺度可能与历史日志不同。
+
 模型采样输出查看脚本：
 
 - `scripts/sample_gsm8k_outputs.py`
@@ -116,7 +118,7 @@ Qwen2.5-Math 模型实际更常输出数学模型格式：
 
 ## DAPO-LoRA 脚本
 
-路径：`recipe/dapo/run_qwen2_5_math_1_5b_gsm8k_dapo_lora_test.sh`
+路径：`examples/dapo/run_qwen2_5_math_1_5b_gsm8k_dapo_lora_test.sh`
 
 尽量与 GRPO 保持一致：
 
@@ -202,8 +204,32 @@ DAPO 特有参数：
 
 ```bash
 bash -n examples/grpo_trainer/run_qwen2_5-3b_gsm8k_grpo_lora.sh
-bash -n recipe/dapo/run_qwen2_5_math_1_5b_gsm8k_dapo_lora_test.sh
+bash -n examples/dapo/run_qwen2_5_math_1_5b_gsm8k_dapo_lora_test.sh
 /home/iie/miniconda3/envs/rl_study/bin/python -m py_compile scripts/plot_training_metrics.py scripts/sample_gsm8k_outputs.py
 ```
 
 训练结束后未发现残留的 Ray/vLLM 训练进程。
+
+## 2026-07-10 项目精简
+
+项目已按 GRPO/DAPO 单一用途精简：
+
+- `examples/` 只保留 GSM8K 数据预处理、本次 GRPO-LoRA 和 DAPO-LoRA 脚本
+- `scripts/` 只保留 vLLM 安装、绘图、rollout 查看和模型采样工具
+- `docs/` 只保留本项目配置、结果和清理说明
+- 其他算法/模型示例、上游测试、Docker、NPU/Megatron/VeOmni 工具已移到外部备份
+- `verl/` 共享运行内核完整保留，避免破坏 `main_ppo` 的动态导入
+
+保护分支：
+
+```text
+backup/pre-grpo-dapo-cleanup-20260710
+```
+
+外部备份：
+
+```text
+/media/iie/4Tb/zccl/.verl_cleanup_backup/2026-07-10_pre_grpo_dapo
+```
+
+完整清单见 `docs/cleanup_manifest.md`。
