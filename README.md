@@ -119,3 +119,14 @@ backup/pre-grpo-dapo-cleanup-20260710
 ```
 
 具体保留范围和恢复方法见 [docs/cleanup_manifest.md](docs/cleanup_manifest.md)。
+
+运行完整的 100-step 区间：
+python scripts/summarize_grpo_rollouts.py \
+  logs/grpo_qwen25_3b_instruct_gsm8k_lora_2gpu26.metrics.csv \
+  logs/rollouts/grpo_qwen25_3b_instruct_gsm8k_lora_2gpu26 \
+  --complete-only
+默认不加 --complete-only 会同时显示当前未满 100 step 的区间。写出 CSV：
+python scripts/summarize_grpo_rollouts.py \
+  logs/grpo_qwen25_3b_instruct_gsm8k_lora_2gpu26.metrics.csv \
+  logs/rollouts/grpo_qwen25_3b_instruct_gsm8k_lora_2gpu26 \
+  --output logs/grpo_qwen25_3b_instruct_gsm8k_lora_2gpu26.summary.csv
