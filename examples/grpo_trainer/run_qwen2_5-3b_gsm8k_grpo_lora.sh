@@ -34,9 +34,9 @@ if [[ "${CUDA_VISIBLE_DEVICES}" != "2,6" ]]; then
     exit 2
 fi
 
-MODEL_PATH="${MODEL_PATH:-/media/iie/4Tb/model/Qwen2.5-Math-1.5B}"
-TRAIN_FILE="${TRAIN_FILE:-${HOME}/data/gsm8k/train.parquet}"
-VAL_FILE="${VAL_FILE:-${HOME}/data/gsm8k/test.parquet}"
+MODEL_PATH="${MODEL_PATH:-/media/iie/4Tb/model/Qwen2.5-3B-Instruct}"
+TRAIN_FILE="${TRAIN_FILE:-${ROOT_DIR}/data/gsm8k/train.parquet}"
+VAL_FILE="${VAL_FILE:-${ROOT_DIR}/data/gsm8k/test.parquet}"
 
 NNODES="${NNODES:-1}"
 NGPUS_PER_NODE="${NGPUS_PER_NODE:-2}"
@@ -56,16 +56,16 @@ REWARD_NUM_WORKERS="${REWARD_NUM_WORKERS:-2}"
 MAX_PROMPT_LENGTH="${MAX_PROMPT_LENGTH:-256}"
 MAX_RESPONSE_LENGTH="${MAX_RESPONSE_LENGTH:-512}"
 PPO_MAX_TOKEN_LEN_PER_GPU="${PPO_MAX_TOKEN_LEN_PER_GPU:-8192}"
-TOTAL_TRAINING_STEPS="${TOTAL_TRAINING_STEPS:-50}"
+TOTAL_TRAINING_STEPS="${TOTAL_TRAINING_STEPS:-}"
 TOTAL_EPOCHS="${TOTAL_EPOCHS:-1}"
-SAVE_FREQ="${SAVE_FREQ:--1}"
+SAVE_FREQ="${SAVE_FREQ:-100}"
 TEST_FREQ="${TEST_FREQ:--1}"
 LORA_RANK="${LORA_RANK:-16}"
 LORA_ALPHA="${LORA_ALPHA:-16}"
 ACTOR_LR="${ACTOR_LR:-3e-6}"
 KL_LOSS_COEF="${KL_LOSS_COEF:-0.001}"
-PROJECT_NAME="${PROJECT_NAME:-verl_qwen25_math_lora}"
-EXPERIMENT_NAME="${EXPERIMENT_NAME:-grpo_qwen25_math_1_5b_gsm8k_lora_rewardfix_2gpu26_50step}"
+PROJECT_NAME="${PROJECT_NAME:-verl_qwen25_3b_instruct_lora}"
+EXPERIMENT_NAME="${EXPERIMENT_NAME:-grpo_qwen25_3b_instruct_gsm8k_lora_2gpu26}"
 LOG_DIR="${LOG_DIR:-${ROOT_DIR}/logs}"
 LOG_FILE="${LOG_FILE:-${LOG_DIR}/${EXPERIMENT_NAME}.log}"
 ROLLOUT_DATA_DIR="${ROLLOUT_DATA_DIR:-${LOG_DIR}/rollouts/${EXPERIMENT_NAME}}"
@@ -180,11 +180,14 @@ CMD=(
     trainer.save_freq="${SAVE_FREQ}"
     trainer.test_freq="${TEST_FREQ}"
     trainer.total_epochs="${TOTAL_EPOCHS}"
-    trainer.total_training_steps="${TOTAL_TRAINING_STEPS}"
     trainer.rollout_data_dir="${ROLLOUT_DATA_DIR}"
     trainer.default_local_dir="${CKPT_DIR}"
     trainer.resume_mode=disable
 )
+
+if [[ -n "${TOTAL_TRAINING_STEPS}" ]]; then
+    CMD+=(trainer.total_training_steps="${TOTAL_TRAINING_STEPS}")
+fi
 
 check_inputs
 
