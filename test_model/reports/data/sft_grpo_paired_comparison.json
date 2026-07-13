@@ -1,0 +1,29 @@
+{
+  "count": 1319,
+  "both_flexible_correct": 704,
+  "sft_only_flexible_correct": 126,
+  "grpo_only_flexible_correct": 290,
+  "neither_flexible_correct": 199,
+  "grpo_minus_sft": {
+    "mean_reward": {
+      "mean": -0.685822592873389,
+      "ci95_low": -0.7313148984198903,
+      "ci95_high": -0.6403302873268877
+    },
+    "strict_format_rate": {
+      "mean": -0.9188779378316907,
+      "ci95_low": -0.9336179135956191,
+      "ci95_high": -0.9041379620677623
+    },
+    "strict_answer_accuracy": {
+      "mean": -0.21607278241091737,
+      "ci95_low": -0.2490263208073464,
+      "ci95_high": -0.18311924401448834
+    },
+    "flexible_answer_accuracy": {
+      "mean": 0.1243366186504928,
+      "ci95_low": 0.09476950455148767,
+      "ci95_high": 0.15390373274949792
+    }
+  }
+}

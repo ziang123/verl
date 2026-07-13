@@ -1,0 +1,15 @@
+{
+  "system_prompt": "按照如下格式回答问题：\n\n<think>\n你的思考过程\n</think>\n<answer>\n#### 你的最终答案\n</answer>\n",
+  "splits": {
+    "train": {
+      "source": "/media/iie/4Tb/zccl/verl/data/unprocessed/train.jsonl",
+      "output": "/media/iie/4Tb/zccl/verl/sft_study/data/train.jsonl",
+      "count": 7473
+    },
+    "test": {
+      "source": "/media/iie/4Tb/zccl/verl/data/unprocessed/test.jsonl",
+      "output": "/media/iie/4Tb/zccl/verl/sft_study/data/test.jsonl",
+      "count": 1319
+    }
+  }
+}

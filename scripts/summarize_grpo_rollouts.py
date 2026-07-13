@@ -45,6 +45,8 @@ class Summary:
     complete_think_ratio: float
     complete_answer_ratio: float
     all_4_correct_ratio: float
+    all_4_incorrect_ratio: float
+    mixed_correctness_ratio: float
 
 
 def parse_args() -> argparse.Namespace:
@@ -181,6 +183,15 @@ def summarize(
                 complete_think_ratio=mean([record.complete_think for record in bucket_records]),
                 complete_answer_ratio=mean([record.complete_answer for record in bucket_records]),
                 all_4_correct_ratio=mean([all(record.correct for record in group) for group in complete_groups]),
+                all_4_incorrect_ratio=mean(
+                    [all(not record.correct for record in group) for group in complete_groups]
+                ),
+                mixed_correctness_ratio=mean(
+                    [
+                        any(record.correct for record in group) and not all(record.correct for record in group)
+                        for group in complete_groups
+                    ]
+                ),
             )
         )
     return summaries
@@ -198,6 +209,8 @@ def print_table(summaries: list[Summary]) -> None:
         "think",
         "answer",
         "all_4_correct",
+        "all_4_incorrect",
+        "mixed",
     ]
     rows = []
     for summary in summaries:
@@ -213,6 +226,8 @@ def print_table(summaries: list[Summary]) -> None:
                 f"{summary.complete_think_ratio:.2%}",
                 f"{summary.complete_answer_ratio:.2%}",
                 f"{summary.all_4_correct_ratio:.2%}",
+                f"{summary.all_4_incorrect_ratio:.2%}",
+                f"{summary.mixed_correctness_ratio:.2%}",
             ]
         )
 
